@@ -23,7 +23,7 @@ const Home = () => {
         motherName: "",
         birthDate: "",
         signature: "",
-        image: "",
+        number: "",
     })
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
@@ -46,12 +46,6 @@ const Home = () => {
             const userCredential = await 
             createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
-            let imageUrl = "";
-               if(formData.image){
-                const storageRef = ref(storage, `users/${user.uid}/${formData.image.name}`);
-                const uploadTask = await uploadBytesResumable(storageRef, formData.image);
-                imageUrl = await getDownloadURL(uploadTask);
-               }
 
              await setDoc(doc(db, "users", user.uid), {
                 firstName: formData.firstName,
@@ -60,12 +54,13 @@ const Home = () => {
                 motherName: formData.motherName,
                 birthDate: formData.birthDate,
                 signature: formData.signature,
-                image: imageUrl,
+                number: formData.number,
 
                 division: selectedDivision,
                 district: selectedDistrict,
                 upazila: selectedUpazila,
-                village: selectVillage
+                village: selectVillage,
+                
                  
                 
 
@@ -104,18 +99,18 @@ const Home = () => {
                           <label className='label text-[#DADADA] text-lg'>Date of Birth</label>
                           <input type='date' name="birthDate" className='input text-black text-lg bg-[#018d01]' placeholder='Date of Birth' value={formData.birthDate} onChange={handleChange}/>
 
+                             <label className="label text-[#DADADA] text-lg pt-1">Number :</label>
+                            <input
+  type="text"
+  name="number"  
+  className="input text-black text-lg bg-[#018d01]"
+  placeholder="Number"
+  value={formData.number}
+  onChange={handleChange}
+/>
                             <label className='label text-[#DADADA] text-lg'>Signature</label>
                             <input type="text" name="signature" className='input text-black text-lg bg-[#018d01]' placeholder='Signature' value={formData.signature} onChange={handleChange}/>
 
-                           <div className='flex pt-5 gap-12'>
-                                <label className='label text-[#DADADA] text-lg'>Image</label>            
-                                <input type="file" accept="image/*" className='input text-black text-lg bg-[#018d01] w-[130px] h-[130px]' placeholder='image' src="" alt="" onChange={(e) => setFormData((prev) => ({
-                                       ...prev,
-                                    image: e.target.files[0],
-                                 }))
-                              }
-                                  />
-                            </div> 
 
                         </fieldset>
                      </form>
@@ -231,8 +226,6 @@ const Home = () => {
                                     <div className='pt-3'>
                                       <form onSubmit={handleData}>
                                         <fieldset className="fieldset">
-                                         <label className="label text-[#DADADA] text-lg pt-1">Number :</label>
-                                         <input type="number" className="input text-black text-lg bg-[#018d01]" name="" id="" placeholder='Number' />
                                          <br />
                                          <label className="label text-[#DADADA] text-lg pt-1">Email :</label>
                                          <input type="email" className="input text-black text-lg bg-[#018d01]" name="" id="" placeholder='email' value={email} onChange={(e) => setEmail(e.target.value)} required />
